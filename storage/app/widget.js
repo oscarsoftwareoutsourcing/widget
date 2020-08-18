@@ -22,18 +22,18 @@ const keypadZero = 48;
 const numpadZero = 96;
 
 //add key codes for digits 0 - 9 into this filter
-for(let i = 0; i <= 9; i++){
+for (let i = 0; i <= 9; i++) {
     filter.push(i + keypadZero);
     filter.push(i + numpadZero);
 }
 
 //add other keys that might be needed for navigation
 //or for editing the keyboard input
-filter.push(8);     //backspace
-filter.push(9);     //tab
-filter.push(46);    //delete
-filter.push(37);    //left arrow
-filter.push(39);    //right arrow
+filter.push(8); //backspace
+filter.push(9); //tab
+filter.push(46); //delete
+filter.push(37); //left arrow
+filter.push(39); //right arrow
 
 /*******************************************************
  * replaceAll
@@ -41,7 +41,7 @@ filter.push(39);    //right arrow
  * string 'search' are replaced with another
  * string 'replace' in a string 'src'
  *******************************************************/
-function replaceAll(src,search,replace){
+function replaceAll(src, search, replace) {
     return src.split(search).join(replace);
 }
 
@@ -49,13 +49,13 @@ function replaceAll(src,search,replace){
  * formatPhoneText
  * returns a string that is in XXX-XXX-XXXX format
  *******************************************************/
-function formatPhoneText(value){
-    value = this.replaceAll(value.trim()," ","");
+function formatPhoneText(value) {
+    value = this.replaceAll(value.trim(), " ", "");
 
-    if(value.length > 3 && value.length <= 6)
-        value = value.slice(0,3) + " " + value.slice(3);
-    else if(value.length > 6)
-        value = value.slice(0,3) + " " + value.slice(3,6) + " " + value.slice(6);
+    if (value.length > 3 && value.length <= 6)
+        value = value.slice(0, 3) + " " + value.slice(3);
+    else if (value.length > 6)
+        value = value.slice(0, 3) + " " + value.slice(3, 6) + " " + value.slice(6);
 
     return value;
 }
@@ -64,7 +64,7 @@ function formatPhoneText(value){
  * validatePhone
  * return true if the string 'p' is a valid phone
  *******************************************************/
-function validatePhone(p){
+function validatePhone(p) {
     const phoneRe = /^[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{3}$/
     const digits = p.replace(/\D/g, '')
     return phoneRe.test(digits);
@@ -76,8 +76,8 @@ function validatePhone(p){
  * or not. If not allowed, prevent the key event
  * from propagating further
  *******************************************************/
-function onKeyDown(e){
-    if(filter.indexOf(e.keyCode) < 0){
+function onKeyDown(e) {
+    if (filter.indexOf(e.keyCode) < 0) {
         e.preventDefault();
         return false;
     }
@@ -91,7 +91,7 @@ function onKeyDown(e){
  * phone number. Adjust the border color based on the
  * result of that validation
  *******************************************************/
-function onKeyUp(e){
+function onKeyUp(e) {
     const input = e.target
     const formatted = formatPhoneText(input.value)
     const isError = (validatePhone(formatted) || formatted.length === 0)
@@ -105,12 +105,12 @@ function onKeyUp(e){
  * Now let's rig up all the fields with the specified
  * 'className' to work like phone number input fields
  *******************************************************/
-function setupPhoneFields(className){
+function setupPhoneFields(className) {
     const lstPhoneFields = document.getElementsByClassName(className)
 
-    for(let i=0; i < lstPhoneFields.length; i++){
+    for (let i = 0; i < lstPhoneFields.length; i++) {
         const input = lstPhoneFields[i]
-        if(input.type.toLowerCase() === "text"){
+        if (input.type.toLowerCase() === "text") {
             input.placeholder = "Nro de teléfono";
             input.addEventListener("keydown", onKeyDown);
             input.addEventListener("keyup", onKeyUp);
@@ -143,7 +143,9 @@ const render = () => {
 
 const post = () => {
     let phone = document.querySelector('#phone').value
-    phone = replaceAll(phone.trim()," ","");
+    phone = replaceAll(phone.trim(), " ", "");
+    console.log(phone);
+    console.log(widgetId);
     fetch(url, {
         method: 'post',
         headers: {
@@ -154,7 +156,7 @@ const post = () => {
             phone
         })
     }).then(response => {
-        if(response.ok) return renderSuccess()
+        if (response.ok) return renderSuccess()
         throw new Error('Por favor intenta nuevamente');
     }).catch(error => {
         alert('Por favor, intente nuevamente.')
@@ -179,7 +181,7 @@ const renderSuccess = () => {
   `
 }
 
-window.onload = function() {
+window.onload = function () {
     addStyle(styles);
     render();
     setupPhoneFields("input");
