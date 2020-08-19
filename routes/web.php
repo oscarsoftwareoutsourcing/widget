@@ -14,5 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('{uuid}/widget', 'WidgetController@show');
-Route::get('{uuid}/default', 'WidgetController@show');
+Route::group(['middleware' => ['cors']], function () {
+    Route::get('{uuid}/widget', 'WidgetController@show');
+    Route::get('{uuid}/default', 'WidgetController@show');
+    Route::post('widget/data', 'WidgetDataController@store');
+});
