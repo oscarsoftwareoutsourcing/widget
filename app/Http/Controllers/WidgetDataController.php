@@ -60,7 +60,7 @@ class WidgetDataController extends Controller
             $widgetData->save();
 
             // Send email notification
-            Notification::send($user, new WidgetDataNotification());
+            //Notification::send($user, new WidgetDataNotification());
 
         } catch (ErrorException $error) {
             return response()->json(['success'=>false, 'message' => $error], 500);
