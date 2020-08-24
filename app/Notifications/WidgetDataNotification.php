@@ -92,6 +92,7 @@ class WidgetDataNotification extends Notification
             'icon' => 'icon-server',
             'title' => 'Nuevo Call Me de ' . $this->user->name,
             'text'=>  'Se ha generado un nuevo Call Me',
+            'link' => '/widget/widgetsData',
             'time'=> $this->time
         ];
     }
@@ -108,6 +109,7 @@ class WidgetDataNotification extends Notification
             'icon' => 'icon-server',
             'title' => 'Nuevo Call Me de ' . $this->user->name,
             'text'=>  'Se ha generado un nuevo Call Me',
+            'link' => '/widget/widgetsData',
             'time'=> $this->time
         ]);
     }
