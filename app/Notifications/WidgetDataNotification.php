@@ -52,16 +52,16 @@ class WidgetDataNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Nuevo Widget creado')
+                    ->subject('Nuevo Call Me creado')
                     ->greeting('Hola')
-                    ->line('Se ha generado un nuevo widget con la siguiente información:')
+                    ->line('Se ha generado un nuevo Call Me con la siguiente información:')
                     ->line(
                         'Nro. de teléfono: ' . (method_exists($this->infoData, 'phone'))  ? $this->infoData->phone : ''
                     )
                     ->line('URL: ' . $this->widget->url)
                     ->line('Usuario ' . (
                         ($this->user->id !== $this->widget->user_id)
-                        ? 'Referido: ' : 'que creó el widget: '
+                        ? 'Referido: ' : 'que creó el Call Me: '
                     ) . $this->user->name)
                     ->line('Fecha: ' . $this->widget->created_at)
                     ->line('Equipo Ventonic');
@@ -90,8 +90,8 @@ class WidgetDataNotification extends Notification
     {
         return [
             'icon' => 'icon-server',
-            'title' => 'Nuevo widget de ' . $this->user->name,
-            'text'=>  'Se ha generado un nuevo widget',
+            'title' => 'Nuevo Call Me de ' . $this->user->name,
+            'text'=>  'Se ha generado un nuevo Call Me',
             'time'=> $this->time
         ];
     }
@@ -106,8 +106,8 @@ class WidgetDataNotification extends Notification
     {
         return new BroadcastMessage([
             'icon' => 'icon-server',
-            'title' => 'Nuevo widget de ' . $this->user->name,
-            'text'=>  'Se ha generado un nuevo widget',
+            'title' => 'Nuevo Call Me de ' . $this->user->name,
+            'text'=>  'Se ha generado un nuevo Call Me',
             'time'=> $this->time
         ]);
     }
