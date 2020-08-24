@@ -55,7 +55,9 @@ class WidgetDataNotification extends Notification
                     ->subject('Nuevo Widget creado')
                     ->greeting('Hola')
                     ->line('Se ha generado un nuevo widget con la siguiente información:')
-                    ->line('Nro. de teléfono: ' . $this->infoData['phone'])
+                    ->line(
+                        'Nro. de teléfono: ' . (method_exists($this->infoData, 'phone'))  ? $this->infoData->phone : ''
+                    )
                     ->line('URL: ' . $this->widget->url)
                     ->line('Usuario ' . (
                         ($this->user->id !== $this->widget->user_id)
