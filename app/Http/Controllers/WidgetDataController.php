@@ -7,6 +7,7 @@ use App\Models\Widget;
 use App\Models\WidgetData;
 use App\Notifications\WidgetDataNotification;
 use App\User;
+use App\Helpers\FormatTime;
 use Illuminate\Http\Request;
 use ErrorException;
 use Illuminate\Http\Response;
@@ -44,13 +45,14 @@ class WidgetDataController extends Controller
     {
         $request->validated();
 
-        try{
+        try {
             // Headers from API request
             $origin = request()->headers->get('origin');
             $widgetId = request()->headers->get('widgetId');
             // Search the widget ID
             $widget = Widget::where('token', $widgetId)->first();
-            $user = User::find($widget->user_id_referred);
+            $user = User::find($widget->user_id);
+            $user_referred = User::find($widget->user_id_referred);
             // Saving the data into Database (WidgetData table)
             $widgetData = new WidgetData();
             $widgetData->widget_id = $widget->id;
@@ -58,10 +60,12 @@ class WidgetDataController extends Controller
             $data = array ('phone' => $request->phone);
             $widgetData->info_data = json_encode($data);
             $widgetData->save();
+            $time=FormatTime::LongTimeFilter($widgetData->created_at);
 
-            // Send email notification
-            //Notification::send($user, new WidgetDataNotification());
-
+            /** Notificación al usuario que creo el widget (por correo y por notificación de la aplicación) */
+            $user->notify(new WidgetDataNotification($user_referred, $widget, $widgetData, $time));
+            /** Notificación al usuario referido (por correo y por notificación de la aplicación) */
+            $user_referred->notify(new WidgetDataNotification($user, $widget, $widgetData, $time));
         } catch (ErrorException $error) {
             return response()->json(['success'=>false, 'message' => $error], 500);
         }

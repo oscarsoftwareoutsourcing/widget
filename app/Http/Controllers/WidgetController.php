@@ -43,8 +43,7 @@ class WidgetController extends Controller
     {
         $request->validated();
 
-        try{
-
+        try {
             $widget = new Widget();
             $widget->app_id = $request->app_id;
             $widget->user_id = $request->user_id;
@@ -54,10 +53,9 @@ class WidgetController extends Controller
             $widget->token = UuidController::v4();
             $widget->save();
             return response()->json(['success'=>true, 'message' => "Widget created successfully"]);
-        } catch (ErrorException $error){
-
+        } catch (ErrorException $error) {
+            //
         }
-
     }
 
     /**
@@ -72,15 +70,14 @@ class WidgetController extends Controller
         $where[] = ['status',1];
         $widget = Widget::where($where)->first();
 
-        if ($widget){
+        if ($widget) {
             $widgetFile = Storage::disk('local')->get('widget.js');
-            $widgetFile = str_replace("%%%WIDGET_ID%%%",$widget->token,$widgetFile);
-            $widgetFile = str_replace("%%%URL_SITE%%%",Config::get('app.url'),$widgetFile);
+            $widgetFile = str_replace("%%%WIDGET_ID%%%", $widget->token, $widgetFile);
+            $widgetFile = str_replace("%%%URL_SITE%%%", Config::get('app.url'), $widgetFile);
             return Response::make($widgetFile, '200')->header('Content-Type', 'text/javascript');
         } else {
             return Response::make('', '200')->header('Content-Type', 'text/javascript');
         }
-
     }
 
     /**

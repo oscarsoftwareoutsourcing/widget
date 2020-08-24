@@ -36,4 +36,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * User has many Widgets.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function widgets()
+    {
+        return $this->hasMany(Widget::class);
+    }
+
+    /**
+     * User has many WidgetsReferred.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function widgetsReferred()
+    {
+        return $this->hasMany(Widget::class, 'user_id_referred');
+    }
 }
