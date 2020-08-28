@@ -1,4 +1,4 @@
-const styles = '.widget-container { max-width: 375px;  } .form-container-widget { display: flex; } .input {  padding: 10px; border: solid 1px; border-radius: 4px;} .btn-widget { color: #fff; background-color: #0C7EF7 !important; border-radius: 4px; border: none; margin-left: 16px; letter-spacing: 0.2px; padding: 14px} .text{width: 100%;} .success-container{ display: flex; align-items: center; padding: 0 20px;} .ml-10 {margin-left: 10px;}'
+const styles = '.widget-container { max-width: 375px;  } .form-container-widget { display: flex; } .input {  padding: 10px; border: solid 1px; border-radius: 4px;} button .btn-widget { color: #fff !important; background-color: #0C7EF7 !important; border-radius: 4px; border: none; margin-left: 16px; letter-spacing: 0.2px; padding: 14px} .text{width: 100%;} .success-container{ display: flex; align-items: center; padding: 0 20px;} .ml-10 {margin-left: 10px;}'
 const widgetId = '%%%WIDGET_ID%%%';
 const url = '%%%URL_SITE%%%/api/widget/data'
 
