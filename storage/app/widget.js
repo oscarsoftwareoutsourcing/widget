@@ -1,7 +1,6 @@
-const styles =
-    ".widget-container { max-width: 375px;  } .form-container-widget { display: flex; } .input {  padding: 10px; border: solid 1px; border-radius: 4px;} .form-container-widget button { box-shadow: none; display: inline-block; font-style: normal; text - transform: uppercase !important; color: #fff !important; background-color: #0C7EF7 !important; border-radius: 4px !important; border: none !important; height: 100% !important;} .btn-widget { color: #fff !important; background-color: #0C7EF7 !important; border-radius: 4px; border: none; margin-left: 16px; letter-spacing: 0.2px; padding: 14px} .text{width: 100%;} .success-container{ display: flex; align-items: center; padding: 0 20px;} .ml-10 {margin-left: 10px;}";
-const widgetId = "%%%WIDGET_ID%%%";
-const url = "%%%URL_SITE%%%/api/widget/data";
+const styles = '.widget-container { max-width: 375px;  } .form-container-widget { display: flex; } .input {  padding: 10px; border: solid 1px; border-radius: 4px;} .form-container-widget button { box-shadow: none; display: inline-block; font-style: normal; text - transform: uppercase !important; color: #fff !important; background-color: #0C7EF7 !important; border-radius: 4px !important; border: none !important; height: 100% !important;} .btn-widget { color: #fff !important; background-color: #0C7EF7 !important; border-radius: 4px; border: none; margin-left: 16px; letter-spacing: 0.2px; padding: 14px} .text{width: 100%;} .success-container{ display: flex; align-items: center; padding: 0 20px;} .ml-10 {margin-left: 10px;}'
+const widgetId = '%%%WIDGET_ID%%%';
+const url = '%%%URL_SITE%%%/api/widget/data'
 
 /*******************************************************
  * create a filter that will be used to determine
@@ -14,7 +13,7 @@ const url = "%%%URL_SITE%%%/api/widget/data";
  * -- backspace / delete for correcting
  * -- tab key to allow focus to shift
  *******************************************************/
-const filter = [];
+const filter = []
 
 //since we're looking for phone numbers, we need
 //to allow digits 0 - 9 (they can come from either
@@ -56,8 +55,7 @@ function formatPhoneText(value) {
     if (value.length > 3 && value.length <= 6)
         value = value.slice(0, 3) + " " + value.slice(3);
     else if (value.length > 6)
-        value =
-            value.slice(0, 3) + " " + value.slice(3, 6) + " " + value.slice(6);
+        value = value.slice(0, 3) + " " + value.slice(3, 6) + " " + value.slice(6);
 
     return value;
 }
@@ -67,8 +65,8 @@ function formatPhoneText(value) {
  * return true if the string 'p' is a valid phone
  *******************************************************/
 function validatePhone(p) {
-    const phoneRe = /^[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{3}$/;
-    const digits = p.replace(/\D/g, "");
+    const phoneRe = /^[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{3}$/
+    const digits = p.replace(/\D/g, '')
     return phoneRe.test(digits);
 }
 
@@ -94,11 +92,11 @@ function onKeyDown(e) {
  * result of that validation
  *******************************************************/
 function onKeyUp(e) {
-    const input = e.target;
-    const formatted = formatPhoneText(input.value);
-    const isError = validatePhone(formatted) || formatted.length === 0;
-    input.style.borderColor = isError ? "gray" : "red";
-    input.style.outline = "none";
+    const input = e.target
+    const formatted = formatPhoneText(input.value)
+    const isError = (validatePhone(formatted) || formatted.length === 0)
+    input.style.borderColor = (isError) ? 'gray' : 'red';
+    input.style.outline = 'none';
     input.value = formatted;
 }
 
@@ -108,10 +106,10 @@ function onKeyUp(e) {
  * 'className' to work like phone number input fields
  *******************************************************/
 function setupPhoneFields(className) {
-    const lstPhoneFields = document.getElementsByClassName(className);
+    const lstPhoneFields = document.getElementsByClassName(className)
 
     for (let i = 0; i < lstPhoneFields.length; i++) {
-        const input = lstPhoneFields[i];
+        const input = lstPhoneFields[i]
         if (input.type.toLowerCase() === "text") {
             input.placeholder = "Nº de teléfono";
             input.addEventListener("keydown", onKeyDown);
@@ -121,55 +119,55 @@ function setupPhoneFields(className) {
 }
 
 function addStyle(styles) {
-    const css = document.createElement("style");
-    css.type = "text/css";
-    if (css.styleSheet) css.styleSheet.cssText = styles;
-    else css.appendChild(document.createTextNode(styles));
+    const css = document.createElement('style')
+    css.type = 'text/css';
+    if (css.styleSheet)
+        css.styleSheet.cssText = styles;
+    else
+        css.appendChild(document.createTextNode(styles));
     document.getElementsByTagName("head")[0].appendChild(css);
 }
 
 const render = () => {
-    const widget = document.querySelector("#widget-vendedores");
+    const widget = document.querySelector('#widget-vendedores');
     widget.innerHTML = `
   <div class='widget-container' id='widget-form'>
     <p class='text'>Solicitar mas información o llamada de un agente de ventas</p>
     <div class='form-container-widget'>
-      <input id='phone' name="phone" type='text' placeholder="Nro de telefono" required class='input'>
+      <input id='phone' name="phone" type='text' placeholder="Nº de telefono" required class='input'>
       <button id='contact-btn' class='btn-widget'>Contactarme</button>
     </div>
   </div>
-  `;
-};
+  `
+}
 
 const post = () => {
-    let phone = document.querySelector("#phone").value;
+    let phone = document.querySelector('#phone').value
     phone = replaceAll(phone.trim(), " ", "");
     console.log(phone);
     console.log(widgetId);
     fetch(url, {
-        method: "post",
+        method: 'post',
         headers: {
             widgetId,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            phone,
-        }),
-    })
-        .then((response) => {
-            if (response.ok) return renderSuccess();
-            throw new Error("Por favor intenta nuevamente");
+            phone
         })
-        .catch((error) => {
-            alert("Por favor, intente nuevamente.");
-        });
-};
+    }).then(response => {
+        if (response.ok) return renderSuccess()
+        throw new Error('Por favor intenta nuevamente');
+    }).catch(error => {
+        alert('Por favor, intente nuevamente.')
+    })
+}
 
 const renderSuccess = () => {
-    const form = document.querySelector("#widget-form");
-    form.style.display = "none";
+    const form = document.querySelector('#widget-form');
+    form.style.display = 'none';
 
-    const widget = document.querySelector("#widget-vendedores");
+    const widget = document.querySelector('#widget-vendedores');
     widget.innerHTML = `
     <div class='widget-container'>
       <div class='success-container'>
@@ -180,14 +178,15 @@ const renderSuccess = () => {
         <p class='ml-10'>Tu solicitud ha sido registrada</p>
       </div>
     </div>
-  `;
-};
+  `
+}
 
 window.onload = function () {
     addStyle(styles);
     render();
     setupPhoneFields("input");
-    document.querySelector("#contact-btn").addEventListener("click", () => {
-        post();
-    });
-};
+    document.querySelector('#contact-btn').addEventListener('click', () => {
+        post()
+    })
+}
+
